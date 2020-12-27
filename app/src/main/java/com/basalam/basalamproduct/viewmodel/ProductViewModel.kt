@@ -17,7 +17,6 @@ import retrofit2.Response
 *********
  */
 
-
 class ProductViewModel(
 
     val productRepository: ProductRepository

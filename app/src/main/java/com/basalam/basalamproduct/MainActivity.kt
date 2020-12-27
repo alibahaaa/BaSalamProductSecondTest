@@ -14,7 +14,7 @@ import com.basalam.basalamproduct.viewmodel.ProductViewModelProviderFactory
 *********
 * here we have our main activity
 * in this project we use MVVM , Retrofit , Room , Navigation , ViewModel , LiveData , DataBinding
-*
+*********
  */
 
 
