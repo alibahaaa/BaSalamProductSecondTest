@@ -33,6 +33,5 @@ class MainActivity : AppCompatActivity() {
             ProductViewModel::class.java
         )
 
-
     }
 }
