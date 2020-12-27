@@ -53,7 +53,6 @@ object StringUtil {
         view.text = weight
     }
 
-
     //change english number to persian number (better to change font that support persian number)
     @BindingAdapter("rateFormat")
     @JvmStatic

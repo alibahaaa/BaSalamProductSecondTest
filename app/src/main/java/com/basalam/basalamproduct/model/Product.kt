@@ -18,4 +18,4 @@ data class Product(
     val weight: Int,
     val price: Int,
     val rating: Rating
-) :Parcelable
+) : Parcelable
