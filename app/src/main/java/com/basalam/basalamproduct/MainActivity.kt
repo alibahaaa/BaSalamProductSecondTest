@@ -18,7 +18,6 @@ import com.basalam.basalamproduct.viewmodel.ProductViewModelProviderFactory
  */
 
 
-
 class MainActivity : AppCompatActivity() {
 
     lateinit var viewModel: ProductViewModel
@@ -32,6 +31,5 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(
             ProductViewModel::class.java
         )
-
     }
 }
