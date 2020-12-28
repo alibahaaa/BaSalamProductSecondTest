@@ -1,56 +1,38 @@
 package com.basalam.basalamproduct.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.basalam.basalamproduct.model.ProductResponse
+import com.basalam.basalamproduct.model.Product
 import com.basalam.basalamproduct.repository.ProductRepository
-import com.basalam.basalamproduct.util.Resource
+import com.basalam.basalamproduct.util.DataState
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import retrofit2.Response
-
-
-/*
-*********
-* hee we create The ProductViewModel class that designed to store and manage UI-related data in a lifecycle conscious way.
-* The ViewModel class allows data to survive configuration changes such as screen rotations.
-*********
- */
 
 class ProductViewModel(
-
-    val productRepository: ProductRepository
-
+    private val productRepository: ProductRepository
 ) : ViewModel() {
+    private val _products: MutableLiveData<DataState<List<Product>>> = MutableLiveData()
+    val product: LiveData<DataState<List<Product>>>
+        get() = _products
 
-    val products: MutableLiveData<Resource<ProductResponse>> = MutableLiveData()
-
-
-    init {
-        getProducts("{productSearch(size: 20) {products {id name photo(size: LARGE) { url } vendor { name } weight price rating { rating count: signals } } } }")
-    }
-
-    fun getProducts(query: String) = viewModelScope.launch {
-
-        products.postValue(Resource.Loading())
-        val response = productRepository.getProduct(query)
-        products.postValue(handleProductResponse(response))
-    }
-
-
-    private fun handleProductResponse(response: Response<ProductResponse>) : Resource<ProductResponse>{
-        if(response.isSuccessful){
-            response.body()?.let {resultResponse->
-                return Resource.Success(resultResponse)
+    fun setStateEvent(mainStateEvents: MainStateEvents, query: String) {
+        viewModelScope.launch {
+            when (mainStateEvents) {
+                is MainStateEvents.GetProductEvents -> {
+                    productRepository.getProduct(query)
+                        .onEach { product ->
+                            _products.value = product
+                            _products.postValue(product)
+                        }.launchIn(viewModelScope)
+                }
             }
-
         }
-        return Resource.Error(response.message())
-
     }
+}
 
-
-
-
-
+sealed class MainStateEvents {
+    object GetProductEvents : MainStateEvents()
 }

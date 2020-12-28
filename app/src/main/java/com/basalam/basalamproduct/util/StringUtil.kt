@@ -8,11 +8,7 @@ import com.squareup.picasso.Picasso
 import java.text.DecimalFormat
 import java.text.NumberFormat
 
-
 object StringUtil {
-
-
-    //set image
     @BindingAdapter(value = ["setImageUrl"])
     @JvmStatic
     fun ImageView.bindImageUrl(url: String?) {
@@ -24,19 +20,14 @@ object StringUtil {
         }
     }
 
-
-    //change english number to persian
     @BindingAdapter("englishToPersian")
     @JvmStatic
     fun bindCurrency(view: TextView, name: String) {
         view.text = EnglishTopersian(name)
     }
 
-
-    // here we add , ( comma ) for money format
     private val formatter: NumberFormat = DecimalFormat("###,###,###,###")
 
-    //change price to money format , Division to 10 for TOMAN and add "تومان" at the last
     @BindingAdapter("moneyFormat")
     @JvmStatic
     fun bindMoneyFormat(view: TextView, name: Int) {
@@ -44,8 +35,6 @@ object StringUtil {
         view.text = price
     }
 
-
-    //add "گرم" at the last
     @BindingAdapter("weightFormat")
     @JvmStatic
     fun bindWeight(view: TextView, name: Int) {
@@ -53,7 +42,6 @@ object StringUtil {
         view.text = weight
     }
 
-    //change english number to persian number (better to change font that support persian number)
     @BindingAdapter("rateFormat")
     @JvmStatic
     fun bindRate(view: TextView, name: Double) {
@@ -61,7 +49,6 @@ object StringUtil {
         view.text = rate
     }
 
-    //add "غرفه" at the first
     @BindingAdapter("vendorFormat")
     @JvmStatic
     fun bindVendor(view: TextView, name: String) {
@@ -69,8 +56,6 @@ object StringUtil {
         view.text = vendor
     }
 
-
-    //add "(" and ")" for count
     @BindingAdapter("countFormat")
     @JvmStatic
     fun bindCount(view: TextView, name: Int) {
@@ -78,8 +63,6 @@ object StringUtil {
         view.text = count
     }
 
-
-    //fun to change english number to persian number (better to change font that support persian number)
     fun EnglishTopersian(persianStr: String): String {
         var result = ""
         var en = '0'
@@ -101,6 +84,4 @@ object StringUtil {
         }
         return result
     }
-
-
 }

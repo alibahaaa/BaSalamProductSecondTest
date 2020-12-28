@@ -5,17 +5,7 @@ import com.basalam.basalamproduct.model.Photo
 import com.basalam.basalamproduct.model.Rating
 import com.basalam.basalamproduct.model.Vendor
 
-
-/*
-*********
-*  we convert classes to variable that room can define them .
-*********
- */
-
 class Converters {
-
-
-    //Photo
     @TypeConverter
     fun fromPhoto(photo: Photo): String {
         return photo.url
@@ -25,7 +15,6 @@ class Converters {
         return Photo(url)
     }
 
-    //Vendor
     @TypeConverter
     fun fromVendor(vendor: Vendor): String {
         return vendor.name
@@ -35,7 +24,6 @@ class Converters {
         return Vendor(name)
     }
 
-    //Rating
     @TypeConverter
     fun fromRating(rating: Rating): Double {
         return rating.rating
@@ -44,6 +32,4 @@ class Converters {
     fun toRating(rating: Double): Rating {
         return Rating(rating,rating.toInt())
     }
-
-
 }

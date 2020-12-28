@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
-
 @Parcelize
 @Entity(tableName = "product_table")
 data class Product(

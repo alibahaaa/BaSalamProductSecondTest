@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.basalam.basalamproduct.util.StringUtil" />
+
+        <variable
+            name="product"
+            type="com.basalam.basalamproduct.model.Product" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="16dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/recycler_image"
+                    setImageUrl="@{product.photo.url}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ph"
+                    app:layout_constraintDimensionRatio="H,1:1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <LinearLayout
+                    android:id="@+id/linear"
+                    android:layout_width="70dp"
+                    android:layout_height="20dp"
+                    android:alpha="0.8"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="@+id/recycler_image"
+                    app:layout_constraintRight_toRightOf="@+id/recycler_image">
+
+
+                    <TextView
+                        android:id="@+id/recycler_text_count"
+                        countFormat="@{product.rating.count}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:fontFamily="@font/iranc"
+                        android:textColor="@color/black"
+                        android:textDirection="rtl"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/recycler_text_rate"
+                        rateFormat="@{product.rating.rating}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:fontFamily="@font/iranc"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textDirection="rtl"
+                        android:textSize="12sp" />
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:padding="3dp"
+                        android:src="@drawable/star" />
+
+                </LinearLayout>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/recycler_text_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/iranc"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textDirection="rtl"
+                    android:textSize="14sp"
+                    app:englishToPersian="@{product.name}"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_image" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/recycler_text_vendor"
+                    vendorFormat="@{product.vendor.name}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/iranc"
+                    android:maxLines="1"
+                    android:textDirection="rtl"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_text_name" />
+
+                <TextView
+                    android:id="@+id/recycler_text_weight"
+                    weightFormat="@{product.weight}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/iranc"
+                    android:textDirection="rtl"
+                    android:textSize="12sp"
+                    app:layout_constraintRight_toRightOf="@id/recycler_text_vendor"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_text_vendor" />
+
+                <TextView
+                    android:id="@+id/recycler_text_price"
+                    moneyFormat="@{product.price}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/iranc"
+                    android:layoutDirection="ltr"
+                    android:textColor="@color/black"
+                    android:textDirection="rtl"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="@id/recycler_text_vendor"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_text_vendor" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
+
+
+</layout>
