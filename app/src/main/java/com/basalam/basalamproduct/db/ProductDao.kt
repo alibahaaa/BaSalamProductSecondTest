@@ -7,7 +7,7 @@ import com.basalam.basalamproduct.model.Product
 @Dao
 interface ProductDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(productEntity: Product): Long
+    suspend fun insert(product: Product): Long
 
     @Query("SELECT * FROM product_table")
     fun getAllProducts(): List<Product>
