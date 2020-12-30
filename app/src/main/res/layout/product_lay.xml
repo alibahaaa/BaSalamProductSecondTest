@@ -16,17 +16,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="4dp"
             app:cardCornerRadius="16dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/recycler_image"
@@ -39,17 +37,19 @@
                     app:layout_constraintDimensionRatio="H,1:1"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <LinearLayout
                     android:id="@+id/linear"
-                    android:layout_width="70dp"
-                    android:layout_height="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:alpha="0.8"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
                     android:background="@color/white"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="@+id/recycler_image"
                     app:layout_constraintRight_toRightOf="@+id/recycler_image">
-
 
                     <TextView
                         android:id="@+id/recycler_text_count"
@@ -76,7 +76,6 @@
                         android:textDirection="rtl"
                         android:textSize="12sp" />
 
-
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
@@ -84,7 +83,6 @@
                         android:src="@drawable/star" />
 
                 </LinearLayout>
-
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/recycler_text_name"
@@ -100,7 +98,6 @@
                     app:englishToPersian="@{product.name}"
                     app:layout_constraintTop_toBottomOf="@+id/recycler_image" />
 
-
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/recycler_text_vendor"
                     vendorFormat="@{product.vendor.name}"
@@ -108,6 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:ellipsize="end"
+                    android:layout_marginBottom="10dp"
                     android:fontFamily="@font/iranc"
                     android:maxLines="1"
                     android:textDirection="rtl"
@@ -143,11 +141,10 @@
                     app:layout_constraintLeft_toLeftOf="@id/recycler_text_vendor"
                     app:layout_constraintTop_toBottomOf="@+id/recycler_text_vendor" />
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
-    </RelativeLayout>
 
+    </RelativeLayout>
 
 </layout>

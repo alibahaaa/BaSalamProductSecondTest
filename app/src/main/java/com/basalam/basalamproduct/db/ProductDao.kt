@@ -7,11 +7,14 @@ import com.basalam.basalamproduct.model.Product
 @Dao
 interface ProductDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(product: Product): Long
+    fun insert(product: List<Product>)
 
     @Query("SELECT * FROM product_table")
-    fun getAllProducts(): List<Product>
+    fun getAllProducts(): LiveData<List<Product>>
 
-    @Delete
-    suspend fun deleteProducts(product: Product)
+    @Query("DELETE FROM product_table")
+    fun deleteAllProducts()
+
+    @Query("SELECT COUNT(*) FROM product_table")
+    fun getProductSize(): Int
 }

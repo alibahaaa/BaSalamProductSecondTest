@@ -1,6 +1,7 @@
 package com.basalam.basalamproduct.model
 
 import android.os.Parcelable
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
@@ -16,5 +17,6 @@ data class Product(
     val vendor: Vendor,
     val weight: Int,
     val price: Int,
+    @Embedded
     val rating: Rating
 ) : Parcelable

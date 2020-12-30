@@ -1,8 +1,8 @@
 package com.basalam.basalamproduct.api
 
 import com.basalam.basalamproduct.model.ProductResponse
+import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -10,7 +10,7 @@ import retrofit2.http.POST
 interface ProductApi {
     @FormUrlEncoded
     @POST("api/user")
-    suspend fun getProduct(
+    fun getProduct(
         @Field("query") query: String
-    ): Response<ProductResponse>
+    ): Call<ProductResponse>
 }

@@ -23,13 +23,4 @@ class Converters {
     fun toVendor(name: String): Vendor {
         return Vendor(name)
     }
-
-    @TypeConverter
-    fun fromRating(rating: Rating): Double {
-        return rating.rating
-    }
-    @TypeConverter
-    fun toRating(rating: Double): Rating {
-        return Rating(rating,rating.toInt())
-    }
 }
