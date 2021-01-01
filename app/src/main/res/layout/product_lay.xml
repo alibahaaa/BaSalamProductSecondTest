@@ -12,7 +12,7 @@
             type="com.basalam.basalamproduct.model.Product" />
     </data>
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -145,6 +145,6 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-    </RelativeLayout>
+    </FrameLayout>
 
 </layout>
