@@ -1,5 +1,5 @@
 package com.basalam.basalamproduct.error
 
-data class ErrorResponse(
-    val errors: List<Error>
+data class ErrorResponse (
+    val errors: List<Error>? = null
 )

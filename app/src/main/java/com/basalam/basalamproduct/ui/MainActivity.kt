@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.resource.observe(this, Observer { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    println("Success log for test")
+                    println("Success log")
                     setUpRecyclerView()
                     hideShimmer()
                     resource.data?.observe(this, Observer { productList ->
@@ -55,23 +55,23 @@ class MainActivity : AppCompatActivity() {
                     })
                 }
                 is Resource.Loading -> {
-                    println("loading log for test")
+                    println("loading log")
                     showShimmer()
                 }
                 is Resource.Error -> {
-                    println("error log for test ${resource.message}")
+                    println("error log ${resource.message}")
                     showRec()
                     setUpRecyclerView()
                     hideShimmer()
-                    showDialog("خطا ${resource.message!!}")
+                    showDialog("خطا : ${resource.message!!}")
                     resource.data?.observe(this, Observer { productList ->
                         productAdapter.differ.submitList(productList)
                     })
                 }
                 is Resource.Empty -> {
                     hideShimmer()
-                    showDialog("هیچ ایتمی برای نمایش وجود ندارد")
-                    println("empty log for test")
+                    showDialog("ایتمی برای نمایش وجود ندارد")
+                    println("empty log")
                 }
             }
         })
