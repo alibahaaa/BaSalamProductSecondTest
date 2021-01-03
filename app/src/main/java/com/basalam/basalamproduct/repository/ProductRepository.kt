@@ -36,7 +36,7 @@ class ProductRepository(
                 ) {
                     threadExecutor.execute {
                         productRes.postValue(
-                            Resource.Error(
+                            Resource.Error.UnKnownError(
                                 "اتصال خود به اینترنت را چک کنید",
                                 db.getProductDao().getAllProducts()
                             )
@@ -72,7 +72,7 @@ class ProductRepository(
                                     Gson().fromJson(response.body(), ErrorResponse::class.java)
                                 productRes.postValue(
                                     errorResponse.errors?.get(0)?.messages?.size?.get(0)?.let {
-                                        Resource.Error(
+                                        Resource.Error.UnKnownError(
                                             it,
                                             db.getProductDao().getAllProducts()
                                         )
@@ -85,7 +85,7 @@ class ProductRepository(
 //                            val errorResponse: ErrorResponse = ErrorUtils.parseError(response)
 //                            println(" log for test ${errorResponse.errors?.get(0)?.messages?.size?.get(0)}")
                             productRes.postValue(
-                                Resource.Error(
+                                Resource.Error.ClientError(
                                     response.code().toString(),
                                     db.getProductDao().getAllProducts()
                                 )
@@ -95,7 +95,7 @@ class ProductRepository(
 //                            val errorResponse: ErrorResponse = ErrorUtils.parseError(response)
 //                            println(" log for test ${errorResponse.errors?.get(0)?.messages?.size?.get(0)}")
                             productRes.postValue(
-                                Resource.Error(
+                                Resource.Error.ServerError(
                                     response.code().toString(),
                                     db.getProductDao().getAllProducts()
                                 )

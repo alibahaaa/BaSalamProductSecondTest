@@ -34,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:background="#FBC02D"
+        android:background="@drawable/button_bg"
         android:fontFamily="@font/iranc"
         android:text="@string/tryAgain"
         app:layout_constraintBottom_toBottomOf="parent"

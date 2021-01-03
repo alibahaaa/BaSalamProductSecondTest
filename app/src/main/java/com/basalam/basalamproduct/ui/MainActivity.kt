@@ -60,19 +60,24 @@ class MainActivity : AppCompatActivity() {
                     println("loading log")
                     showShimmer()
                 }
-                is Resource.Error -> {
-                    println("error log ${resource.message}")
-                    hideRec()
-                    hideShimmer()
-                    showDialog("خطا : ${resource.message!!}" )
-                    resource.data?.observe(this, Observer { productList ->
-                        productAdapter.differ.submitList(productList)
-                    })
-                }
+
                 is Resource.Empty -> {
                     hideShimmer()
                     showDialog("ایتمی برای نمایش وجود ندارد")
                     println("empty log")
+                }
+                is Resource.Error.ClientError -> {
+                }
+                is Resource.Error.ServerError -> {
+                }
+                is Resource.Error.UnKnownError -> {
+                    println("UnknowError log ${resource.message}")
+                    hideRec()
+                    hideShimmer()
+                    showDialog("خطا : ${resource.message!!}")
+                    resource.data?.observe(this, Observer { productList ->
+                        productAdapter.differ.submitList(productList)
+                    })
                 }
             }
         })
@@ -103,7 +108,7 @@ class MainActivity : AppCompatActivity() {
         val body = dialog.findViewById(R.id.dialog_text) as TextView
         body.text = title
         val button = dialog.findViewById(R.id.dialog_button) as Button
-        button.setOnClickListener{
+        button.setOnClickListener {
             viewModel.loadDataAgain()
             dialog.dismiss()
         }
