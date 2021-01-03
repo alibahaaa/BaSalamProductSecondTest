@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.Window
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     println("Success log")
                     setUpRecyclerView()
+                    showRec()
                     hideShimmer()
                     resource.data?.observe(this, Observer { productList ->
                         productAdapter.differ.submitList(productList)
@@ -60,10 +62,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 is Resource.Error -> {
                     println("error log ${resource.message}")
-                    showRec()
-                    setUpRecyclerView()
+                    hideRec()
                     hideShimmer()
-                    showDialog("خطا : ${resource.message!!}")
+                    showDialog("خطا : ${resource.message!!}" )
                     resource.data?.observe(this, Observer { productList ->
                         productAdapter.differ.submitList(productList)
                     })
@@ -89,6 +90,10 @@ class MainActivity : AppCompatActivity() {
         recyclerview_product.visibility = View.VISIBLE
     }
 
+    private fun hideRec() {
+        recyclerview_product.visibility = View.GONE
+    }
+
     private fun showDialog(title: String) {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -97,6 +102,11 @@ class MainActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.dialog)
         val body = dialog.findViewById(R.id.dialog_text) as TextView
         body.text = title
+        val button = dialog.findViewById(R.id.dialog_button) as Button
+        button.setOnClickListener{
+            viewModel.loadDataAgain()
+            dialog.dismiss()
+        }
         dialog.show()
     }
 

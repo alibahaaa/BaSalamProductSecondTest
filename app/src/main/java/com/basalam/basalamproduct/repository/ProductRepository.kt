@@ -37,7 +37,7 @@ class ProductRepository(
                     threadExecutor.execute {
                         productRes.postValue(
                             Resource.Error(
-                                t.message!!,
+                                "اتصال خود به اینترنت را چک کنید",
                                 db.getProductDao().getAllProducts()
                             )
                         )
@@ -70,7 +70,6 @@ class ProductRepository(
                             } else {
                                 val errorResponse =
                                     Gson().fromJson(response.body(), ErrorResponse::class.java)
-                                println("log ${errorResponse.errors?.get(0)?.messages?.size}")
                                 productRes.postValue(
                                     errorResponse.errors?.get(0)?.messages?.size?.get(0)?.let {
                                         Resource.Error(

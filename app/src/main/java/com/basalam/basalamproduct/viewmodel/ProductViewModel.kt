@@ -11,4 +11,8 @@ class ProductViewModel(
 ) : ViewModel() {
     val resource: MutableLiveData<Resource<LiveData<List<Product>>>> =
         productRepository.getProduct(query)
+
+    fun loadDataAgain(){
+        productRepository.getProduct(query)
+    }
 }
