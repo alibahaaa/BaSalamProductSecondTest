@@ -54,7 +54,6 @@ class ProductViewModel(
 
                             }
                         }
-
                     }
                     is DataState.Empty -> {
                         productData.postValue(Resource.Empty())
