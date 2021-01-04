@@ -9,8 +9,6 @@ import android.view.View
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -45,20 +43,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun subscribeObservers() {
-        viewModel.resource.observe(this, Observer { resource ->
-            when (resource) {
+        viewModel.productData.observe(this, Observer { productResponse ->
+            when (productResponse) {
                 is Resource.Success -> {
                     println("Success log")
                     setUpRecyclerView()
-                    showRec()
                     hideShimmer()
-                    resource.data?.observe(this, Observer { productList ->
+                    productResponse.data?.observe(this, Observer { productList ->
                         productAdapter.differ.submitList(productList)
                     })
                 }
-                is Resource.Loading -> {
-                    println("loading log")
-                    showShimmer()
+
+                is Resource.Error.Internal -> {
+                    println("Internal log ${productResponse.message!!}")
+                    hideShimmer()
+                    showDialog("خطا : ${productResponse.message!!}")
+                }
+
+                is Resource.Error.Validator -> {
+                    println("Validator log ${productResponse.message!!}")
+                    hideShimmer()
+                    showDialog("خطا : ${productResponse.message!!}")
+                }
+
+                is Resource.Error.UnKnownError -> {
+                    println("UnknownError log ${productResponse.message!!}")
+                    hideShimmer()
+                    showDialog("خطا : ${productResponse.message!!}")
                 }
 
                 is Resource.Empty -> {
@@ -66,18 +77,10 @@ class MainActivity : AppCompatActivity() {
                     showDialog("ایتمی برای نمایش وجود ندارد")
                     println("empty log")
                 }
-                is Resource.Error.ClientError -> {
-                }
-                is Resource.Error.ServerError -> {
-                }
-                is Resource.Error.UnKnownError -> {
-                    println("UnknowError log ${resource.message}")
-                    hideRec()
-                    hideShimmer()
-                    showDialog("خطا : ${resource.message!!}")
-                    resource.data?.observe(this, Observer { productList ->
-                        productAdapter.differ.submitList(productList)
-                    })
+
+                is Resource.Loading -> {
+                    println("Loading log")
+                    showShimmer()
                 }
             }
         })
@@ -102,7 +105,7 @@ class MainActivity : AppCompatActivity() {
     private fun showDialog(title: String) {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
+        dialog.setCancelable(false)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog)
         val body = dialog.findViewById(R.id.dialog_text) as TextView
