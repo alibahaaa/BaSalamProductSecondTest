@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var productAdapter: ProductAdapter
     lateinit var shimmerAdapter: ShimmerAdapter
     private val query: String =
-        "{productSearch(size: 2) {products {id name photo(size: LARGE) { url } vendor { name } weight price rating { rating count: signals } } } }"
+        "{productSearch(size: 0) {products {id name photo(size: LARGE) { url } vendor { name } weight price rating { rating count: signals } } } }"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
         body.text = title
         val button = dialog.findViewById(R.id.dialog_button) as Button
         button.setOnClickListener {
-            viewModel.loadDataAgain()
+            viewModel.getData()
             dialog.dismiss()
         }
         dialog.show()
