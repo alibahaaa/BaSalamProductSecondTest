@@ -1,9 +1,14 @@
 plugins {
     id 'com.android.application'
+    id("com.apollographql.apollo").version("2.4.6")
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
+}
+
+apollo {
+    generateKotlinModels.set(true)
 }
 
 android {
@@ -105,5 +110,13 @@ dependencies {
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+
+    //apollo
+    implementation("com.apollographql.apollo:apollo-runtime:2.4.6")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+
+
 
 }

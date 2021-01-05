@@ -9,7 +9,7 @@ import com.basalam.basalamproduct.util.ResponseWrapper
 
 class ProductViewModel(
     private val productRepository: ProductRepository,
-    private val query: String
+    private val query: Int
 ) : ViewModel() {
     val productData: MutableLiveData<Resource<LiveData<List<Product>>>> = MutableLiveData()
 

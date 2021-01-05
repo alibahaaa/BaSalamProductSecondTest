@@ -1,0 +1,13 @@
+query GetProducts($size :Int!){
+    productSearch(size : $size) {
+        products {
+            id
+            name
+            photo(size: LARGE) { url }
+            vendor { name }
+            weight
+            price
+            rating { rating count: signals }
+        }
+    }
+}

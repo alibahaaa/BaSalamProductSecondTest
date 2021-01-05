@@ -2,7 +2,6 @@ package com.basalam.basalamproduct.db
 
 import androidx.room.TypeConverter
 import com.basalam.basalamproduct.model.Photo
-import com.basalam.basalamproduct.model.Rating
 import com.basalam.basalamproduct.model.Vendor
 
 class Converters {

@@ -27,8 +27,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewModel: ProductViewModel
     lateinit var productAdapter: ProductAdapter
     lateinit var shimmerAdapter: ShimmerAdapter
-    private val query: String =
-        "{productSearch(size: 2) {products {id name photo(size: LARGE) { url } vendor { name } weight price rating { rating count: signals } } } }"
+    private val query: Int = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

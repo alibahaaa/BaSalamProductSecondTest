@@ -1,20 +1,19 @@
 package com.basalam.basalamproduct.repository
 
 import androidx.lifecycle.LiveData
-import com.basalam.basalamproduct.api.RetrofitInstance
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.api.toJson
+import com.apollographql.apollo.exception.ApolloException
+import com.basalam.basalamproduct.GetProductsQuery
+import com.basalam.basalamproduct.api.ApiClient
 import com.basalam.basalamproduct.db.ProductDatabase
 import com.basalam.basalamproduct.error.ErrorResponse
-import com.basalam.basalamproduct.model.Data
 import com.basalam.basalamproduct.model.Product
 import com.basalam.basalamproduct.model.ProductResponse
 import com.basalam.basalamproduct.thread.ThreadExecutor
 import com.basalam.basalamproduct.util.DataState
 import com.basalam.basalamproduct.util.ResponseWrapper
 import com.google.gson.Gson
-import com.google.gson.JsonObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ProductRepository(
     private val db: ProductDatabase,
@@ -22,7 +21,7 @@ class ProductRepository(
 ) {
     lateinit var res: DataState<LiveData<List<Product>>>
     fun getProduct(
-        query: String,
+        query: Int,
         responseWrapper: ResponseWrapper
     ): DataState<LiveData<List<Product>>> {
         println("rotate log")
@@ -42,32 +41,40 @@ class ProductRepository(
         }
     }
 
-    private fun getDataFromServer(query: String, responseWrapper: ResponseWrapper) {
-        RetrofitInstance.api.getProduct(query).enqueue(
-            object : Callback<JsonObject> {
-                override fun onFailure(
-                    call: Call<JsonObject>,
-                    t: Throwable
-                ) {
-                    setUnKnownError(responseWrapper)
+    private fun getDataFromServer(query: Int, responseWrapper: ResponseWrapper) {
+        ApiClient.apolloClient.query(GetProductsQuery(query)).watcher()
+            .enqueueAndWatch(object :
+                ApolloCall.Callback<GetProductsQuery.Data>() {
+                override fun onFailure(e: ApolloException) {
+                    setUnKnownError(
+                        responseWrapper,
+                        "اتصال خود را به اینترنت چک کنید"
+                    )
+                    println("log for graphql ${e.toString()}")
                 }
 
                 override fun onResponse(
-                    call: Call<JsonObject>,
-                    response: Response<JsonObject>
+                    response:
+                    com.apollographql.apollo.api.Response<GetProductsQuery.Data>
                 ) {
-                    checkServerStatus(response, responseWrapper)
+                    if (response.data != null) {
+                        checkServerStatus(response.data!!, responseWrapper)
+                    } else {
+                        setUnKnownError(
+                            responseWrapper,
+                            "خطایی سمت سرور رخ داده است"
+                        )
+                    }
                 }
-            }
-        )
+            })
     }
 
-    private fun setUnKnownError(responseWrapper: ResponseWrapper) {
+    private fun setUnKnownError(responseWrapper: ResponseWrapper, message: String) {
         threadExecutor.execute {
             responseWrapper.onResponse(
                 DataState.Error(
                     db.getProductDao().getAllProducts(),
-                    "اتصال خود را به اینترنت چک کنید",
+                    message,
                     "unKnown"
                 )
             )
@@ -75,22 +82,21 @@ class ProductRepository(
     }
 
     private fun checkServerStatus(
-        response: Response<JsonObject>,
+        response: GetProductsQuery.Data,
         responseWrapper: ResponseWrapper
     ) {
         threadExecutor.execute {
-            if (response.code() == 200) {
-                val dataResponse =
-                    Gson().fromJson(response.body(), ProductResponse::class.java)
-                if (dataResponse.data != null) {
-                    setDataResponseFromServer(dataResponse, responseWrapper)
-                } else {
-                    val errorResponse =
-                        Gson().fromJson(response.body(), ErrorResponse::class.java)
-                    setErrorResponseFromServer(errorResponse, responseWrapper)
+            val dataResponse =
+                Gson().fromJson(response.toJson(), ProductResponse::class.java)
+            if (dataResponse.data != null) {
+                setDataResponseFromServer(dataResponse, responseWrapper)
+            } else {
+                val errorResponse =
+                    Gson().fromJson(response.toJson(), ErrorResponse::class.java)
+                setErrorResponseFromServer(errorResponse, responseWrapper)
 
-                }
             }
+
         }
     }
 
@@ -122,3 +128,5 @@ class ProductRepository(
         }
     }
 }
+
+
