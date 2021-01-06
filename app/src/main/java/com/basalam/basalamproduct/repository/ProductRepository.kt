@@ -50,7 +50,7 @@ class ProductRepository(
                         responseWrapper,
                         "اتصال خود را به اینترنت چک کنید"
                     )
-                    println("log for graphql ${e.toString()}")
+                    println("log for graphql $e")
                 }
 
                 override fun onResponse(

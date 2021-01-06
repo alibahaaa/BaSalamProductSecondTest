@@ -51,7 +51,6 @@ class ProductViewModel(
                                         response.data!!
                                     )
                                 )
-
                             }
                         }
                     }
