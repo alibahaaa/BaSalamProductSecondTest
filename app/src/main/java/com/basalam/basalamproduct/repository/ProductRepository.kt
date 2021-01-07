@@ -6,6 +6,7 @@ import com.apollographql.apollo.api.toJson
 import com.apollographql.apollo.exception.ApolloException
 import com.basalam.basalamproduct.GetProductsQuery
 import com.basalam.basalamproduct.api.ApiClient
+import com.basalam.basalamproduct.api.ApiMapper
 import com.basalam.basalamproduct.db.ProductDatabase
 import com.basalam.basalamproduct.error.ErrorResponse
 import com.basalam.basalamproduct.model.Product
@@ -15,6 +16,7 @@ import com.basalam.basalamproduct.util.DataState
 import com.basalam.basalamproduct.util.ResponseWrapper
 import com.google.gson.Gson
 
+@Suppress("UNCHECKED_CAST")
 class ProductRepository(
     private val db: ProductDatabase,
     private val threadExecutor: ThreadExecutor
@@ -58,7 +60,12 @@ class ProductRepository(
                     com.apollographql.apollo.api.Response<GetProductsQuery.Data>
                 ) {
                     if (response.data != null) {
-                        checkServerStatus(response.data!!, responseWrapper)
+                        val res: List<Product> =
+                            ApiMapper().mapFromEntities(
+                                response.data?.productSearch?.products
+                                        as List<GetProductsQuery.Product>
+                            )
+                        checkSuccessStatus(responseWrapper, res)
                     } else {
                         setUnKnownError(
                             responseWrapper,
@@ -81,52 +88,25 @@ class ProductRepository(
         }
     }
 
-    private fun checkServerStatus(
-        response: GetProductsQuery.Data,
-        responseWrapper: ResponseWrapper
+    private fun checkSuccessStatus(
+        responseWrapper: ResponseWrapper,
+        response: List<Product>
     ) {
         threadExecutor.execute {
-            val dataResponse =
-                Gson().fromJson(response.toJson(), ProductResponse::class.java)
-            if (dataResponse.data != null) {
-                setDataResponseFromServer(dataResponse, responseWrapper)
+            if (db.getProductDao()
+                    .getProductSize() == 0 && response.isEmpty()
+            ) {
+                responseWrapper.onResponse(DataState.Empty())
             } else {
-                val errorResponse =
-                    Gson().fromJson(response.toJson(), ErrorResponse::class.java)
-                setErrorResponseFromServer(errorResponse, responseWrapper)
-
+                db.getProductDao().deleteAllProducts()
+                db.getProductDao()
+                    .insert(response)
             }
-
-        }
-    }
-
-    private fun setErrorResponseFromServer(
-        errorResponse: ErrorResponse,
-        responseWrapper: ResponseWrapper
-    ) {
-        responseWrapper.onResponse(
-            DataState.Error(
-                db.getProductDao().getAllProducts(),
-                errorResponse.errors?.get(0)?.messages?.size?.get(0),
-                errorResponse.errors?.get(0)?.category
-            )
-        )
-    }
-
-    private fun setDataResponseFromServer(
-        dataResponse: ProductResponse,
-        responseWrapper: ResponseWrapper
-    ) {
-        if (db.getProductDao()
-                .getProductSize() == 0 && dataResponse.data.productSearch.products.isEmpty()
-        ) {
-            responseWrapper.onResponse(DataState.Empty())
-        } else {
-            db.getProductDao().deleteAllProducts()
-            db.getProductDao()
-                .insert(dataResponse.data.productSearch.products)
         }
     }
 }
+
+
+
 
 

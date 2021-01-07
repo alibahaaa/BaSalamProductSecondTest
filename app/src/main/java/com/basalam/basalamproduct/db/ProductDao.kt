@@ -2,6 +2,7 @@ package com.basalam.basalamproduct.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.basalam.basalamproduct.cacheModel.CacheProduct
 import com.basalam.basalamproduct.model.Product
 
 @Dao

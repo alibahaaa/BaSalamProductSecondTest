@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.basalam.basalamproduct.cacheModel.CacheProduct
 import com.basalam.basalamproduct.model.Product
 
 @Database(entities = [Product::class], version = 2)

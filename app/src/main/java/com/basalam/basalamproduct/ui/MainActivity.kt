@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewModel: ProductViewModel
     lateinit var productAdapter: ProductAdapter
     lateinit var shimmerAdapter: ShimmerAdapter
-    private val query: Int = 2
+    private val query: Int = 20
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
