@@ -2,9 +2,9 @@ plugins {
     id 'com.android.application'
     id("com.apollographql.apollo").version("2.4.6")
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-android-extensions'
 }
 
 apollo {
@@ -112,5 +112,10 @@ dependencies {
     //apollo
     implementation("com.apollographql.apollo:apollo-runtime:2.4.6")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //dagger 2
+    implementation 'com.google.dagger:dagger:2.30.1'
+    kapt 'com.google.dagger:dagger-compiler:2.30.1'
+
 
 }

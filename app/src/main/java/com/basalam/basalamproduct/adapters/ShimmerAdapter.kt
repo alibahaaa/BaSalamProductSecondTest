@@ -5,8 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.basalam.basalamproduct.R
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ShimmerAdapter : RecyclerView.Adapter<ShimmerAdapter.ProductsViewHolder>() {
+@Singleton
+class ShimmerAdapter @Inject constructor() :
+    RecyclerView.Adapter<ShimmerAdapter.ProductsViewHolder>() {
     inner class ProductsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {

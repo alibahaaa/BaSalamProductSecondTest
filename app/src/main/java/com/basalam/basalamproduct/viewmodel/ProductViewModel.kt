@@ -6,10 +6,10 @@ import com.basalam.basalamproduct.repository.ProductRepository
 import com.basalam.basalamproduct.util.DataState
 import com.basalam.basalamproduct.util.Resource
 import com.basalam.basalamproduct.util.ResponseWrapper
+import javax.inject.Inject
 
-class ProductViewModel(
-    private val productRepository: ProductRepository,
-    private val query: Int
+class ProductViewModel @Inject constructor(
+    private val productRepository: ProductRepository
 ) : ViewModel() {
     val productData: MutableLiveData<Resource<LiveData<List<Product>>>> = MutableLiveData()
 
@@ -18,7 +18,7 @@ class ProductViewModel(
     }
 
     fun getData() {
-        productRepository.getProduct(query, object : ResponseWrapper {
+        productRepository.getProduct(object : ResponseWrapper {
             override fun onResponse(response: DataState<LiveData<List<Product>>>) {
                 when (response) {
                     is DataState.Success -> {

@@ -8,8 +8,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.basalam.basalamproduct.databinding.ProductLayBinding
 import com.basalam.basalamproduct.model.Product
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductsViewHolder>() {
+@Singleton
+class ProductAdapter @Inject constructor() :
+    RecyclerView.Adapter<ProductAdapter.ProductsViewHolder>() {
     inner class ProductsViewHolder(val binding: ProductLayBinding) :
         RecyclerView.ViewHolder(binding.root)
 

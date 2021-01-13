@@ -3,40 +3,45 @@ package com.basalam.basalamproduct.ui
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.basalam.basalamproduct.AppController
 import com.basalam.basalamproduct.R
-import com.basalam.basalamproduct.adapters.ProductAdapter
-import com.basalam.basalamproduct.adapters.ShimmerAdapter
-import com.basalam.basalamproduct.db.ProductDatabase
-import com.basalam.basalamproduct.repository.ProductRepository
-import com.basalam.basalamproduct.thread.ThreadExecutor
+import com.basalam.basalamproduct.di.AppComponent
 import com.basalam.basalamproduct.util.Resource
 import com.basalam.basalamproduct.viewmodel.ProductViewModel
-import com.basalam.basalamproduct.viewmodel.ProductViewModelProviderFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
+
 
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var viewModel: ProductViewModel
-    lateinit var productAdapter: ProductAdapter
-    lateinit var shimmerAdapter: ShimmerAdapter
-    private val query: Int = 20
+
+    private lateinit var appComponent: AppComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val repository = ProductRepository(ProductDatabase(this), ThreadExecutor())
-        val viewModelProviderFactory = ProductViewModelProviderFactory(repository, query)
-        viewModel = ViewModelProvider(this, viewModelProviderFactory).get(
+
+        appComponent = (application as AppController).getComponent()
+        appComponent.inject(this)
+
+        println("log ${appComponent.getRepository()}")
+
+        viewModel = ViewModelProvider(this, viewModelFactory).get(
             ProductViewModel::class.java
         )
+
         setUpShimmerRecyclerView()
         subscribeObservers()
     }
@@ -49,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                     setUpRecyclerView()
                     hideShimmer()
                     productResponse.data?.observe(this, Observer { productList ->
-                        productAdapter.differ.submitList(productList)
+                        appComponent.getAdapter().differ.submitList(productList)
                     })
                 }
 
@@ -118,17 +123,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpRecyclerView() {
-        productAdapter = ProductAdapter()
         recyclerview_product.apply {
-            adapter = productAdapter
+            adapter = appComponent.getAdapter()
             layoutManager = GridLayoutManager(context, 2)
         }
     }
 
     private fun setUpShimmerRecyclerView() {
-        shimmerAdapter = ShimmerAdapter()
         recyclerview_shimmer.apply {
-            adapter = shimmerAdapter
+            adapter = appComponent.getShimmerAdapter()
             layoutManager = GridLayoutManager(context, 2)
         }
     }
