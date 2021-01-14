@@ -20,13 +20,10 @@ import com.basalam.basalamproduct.viewmodel.ProductViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-
 class MainActivity : AppCompatActivity() {
-
     @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var viewModel: ProductViewModel
-
     private lateinit var appComponent: AppComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,9 +35,8 @@ class MainActivity : AppCompatActivity() {
 
         println("log ${appComponent.getRepository()}")
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(
-            ProductViewModel::class.java
-        )
+        viewModel = ViewModelProvider(this, viewModelFactory)
+            .get(ProductViewModel::class.java)
 
         setUpShimmerRecyclerView()
         subscribeObservers()
