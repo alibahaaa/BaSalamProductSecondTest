@@ -5,7 +5,6 @@ import com.basalam.basalamproduct.util.Constants
 import dagger.Module
 import dagger.Provides
 
-
 @Module
 class ApiModule {
     @Provides

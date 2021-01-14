@@ -12,15 +12,9 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [ApiModule::class, DataBaseModule::class, ViewModelModule::class])
 interface AppComponent {
-    @Component.Builder
-    interface Builder {
-        @BindsInstance
-        fun context(context: Context): Builder
-
-        @BindsInstance
-        fun size(size: Int): Builder
-
-        fun build(): AppComponent
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance context: Context, @BindsInstance size: Int): AppComponent
     }
 
     fun inject(activity: MainActivity)

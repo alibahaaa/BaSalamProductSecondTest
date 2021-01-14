@@ -10,10 +10,8 @@ class AppController : Application() {
     override fun onCreate() {
         super.onCreate()
         appComponent = DaggerAppComponent
-            .builder()
-            .size(5)
-            .context(this)
-            .build()
+            .factory()
+            .create(this,5)
     }
 
     fun getComponent() = appComponent
