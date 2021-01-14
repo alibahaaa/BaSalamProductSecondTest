@@ -11,7 +11,6 @@ import com.basalam.basalamproduct.model.Product
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 class ProductAdapter @Inject constructor() :
     RecyclerView.Adapter<ProductAdapter.ProductsViewHolder>() {
     inner class ProductsViewHolder(val binding: ProductLayBinding) :

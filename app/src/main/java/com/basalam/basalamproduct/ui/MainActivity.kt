@@ -8,35 +8,33 @@ import android.view.View
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.basalam.basalamproduct.AppController
 import com.basalam.basalamproduct.R
-import com.basalam.basalamproduct.di.AppComponent
+import com.basalam.basalamproduct.adapters.ProductAdapter
+import com.basalam.basalamproduct.adapters.ShimmerAdapter
 import com.basalam.basalamproduct.util.Resource
 import com.basalam.basalamproduct.viewmodel.ProductViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private val viewModel: ProductViewModel by viewModels()
+
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var viewModel: ProductViewModel
-    private lateinit var appComponent: AppComponent
+    lateinit var productAdapter: ProductAdapter
+    @Inject
+    lateinit var shimmerAdapter: ShimmerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        appComponent = (application as AppController).getComponent()
-        appComponent.inject(this)
-
-        println("log ${appComponent.getRepository()}")
-
-        viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(ProductViewModel::class.java)
 
         setUpShimmerRecyclerView()
         subscribeObservers()
@@ -50,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                     setUpRecyclerView()
                     hideShimmer()
                     productResponse.data?.observe(this, Observer { productList ->
-                        appComponent.getAdapter().differ.submitList(productList)
+                        productAdapter.differ.submitList(productList)
                     })
                 }
 
@@ -120,14 +118,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpRecyclerView() {
         recyclerview_product.apply {
-            adapter = appComponent.getAdapter()
+            adapter = productAdapter
             layoutManager = GridLayoutManager(context, 2)
         }
     }
 
     private fun setUpShimmerRecyclerView() {
         recyclerview_shimmer.apply {
-            adapter = appComponent.getShimmerAdapter()
+            adapter = shimmerAdapter
             layoutManager = GridLayoutManager(context, 2)
         }
     }

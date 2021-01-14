@@ -8,7 +8,6 @@ import com.basalam.basalamproduct.R
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 class ShimmerAdapter @Inject constructor() :
     RecyclerView.Adapter<ShimmerAdapter.ProductsViewHolder>() {
     inner class ProductsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

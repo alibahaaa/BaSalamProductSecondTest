@@ -20,16 +20,16 @@ class ProductRepository @Inject constructor(
     private val db: ProductDatabase,
     private val threadExecutor: ThreadExecutor,
     private val apolloClient: ApolloClient,
-    private val apiMapper: ApiMapper,
-    private val size: Int
+    private val apiMapper: ApiMapper
 ) {
     lateinit var res: DataState<LiveData<List<Product>>>
     fun getProduct(
-        responseWrapper: ResponseWrapper
+        responseWrapper: ResponseWrapper,
+        size: Int
     ): DataState<LiveData<List<Product>>> {
         println("rotate log")
         setSuccessWrapper(responseWrapper)
-        getDataFromServer(responseWrapper)
+        getDataFromServer(responseWrapper, size)
         return res
     }
 
@@ -44,7 +44,7 @@ class ProductRepository @Inject constructor(
         }
     }
 
-    private fun getDataFromServer(responseWrapper: ResponseWrapper) {
+    private fun getDataFromServer(responseWrapper: ResponseWrapper, size: Int) {
         apolloClient.query(GetProductsQuery(size)).watcher()
             .enqueueAndWatch(object :
                 ApolloCall.Callback<GetProductsQuery.Data>() {
@@ -107,8 +107,3 @@ class ProductRepository @Inject constructor(
         }
     }
 }
-
-
-
-
-
