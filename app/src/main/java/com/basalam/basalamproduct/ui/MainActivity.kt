@@ -11,9 +11,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.basalam.basalamproduct.AppController
 import com.basalam.basalamproduct.R
 import com.basalam.basalamproduct.adapters.ProductAdapter
 import com.basalam.basalamproduct.adapters.ShimmerAdapter
@@ -26,7 +24,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val viewModel: ProductViewModel by viewModels()
-
     @Inject
     lateinit var productAdapter: ProductAdapter
     @Inject

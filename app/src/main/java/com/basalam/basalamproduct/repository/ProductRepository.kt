@@ -6,6 +6,7 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.exception.ApolloException
 import com.basalam.basalamproduct.GetProductsQuery
 import com.basalam.basalamproduct.api.ApiMapper
+import com.basalam.basalamproduct.db.ProductDao
 import com.basalam.basalamproduct.db.ProductDatabase
 import com.basalam.basalamproduct.model.Product
 import com.basalam.basalamproduct.thread.ThreadExecutor
@@ -17,7 +18,7 @@ import javax.inject.Singleton
 @Singleton
 @Suppress("UNCHECKED_CAST")
 class ProductRepository @Inject constructor(
-    private val db: ProductDatabase,
+    private val productDao: ProductDao,
     private val threadExecutor: ThreadExecutor,
     private val apolloClient: ApolloClient,
     private val apiMapper: ApiMapper
@@ -35,10 +36,10 @@ class ProductRepository @Inject constructor(
 
     private fun setSuccessWrapper(responseWrapper: ResponseWrapper) {
         threadExecutor.execute {
-            res = DataState.Success(db.getProductDao().getAllProducts())
+            res = DataState.Success(productDao.getAllProducts())
             responseWrapper.onResponse(
                 DataState.Success(
-                    db.getProductDao().getAllProducts()
+                    productDao.getAllProducts()
                 )
             )
         }
@@ -82,7 +83,7 @@ class ProductRepository @Inject constructor(
         threadExecutor.execute {
             responseWrapper.onResponse(
                 DataState.Error(
-                    db.getProductDao().getAllProducts(),
+                    productDao.getAllProducts(),
                     message,
                     "unKnown"
                 )
@@ -95,14 +96,12 @@ class ProductRepository @Inject constructor(
         response: List<Product>
     ) {
         threadExecutor.execute {
-            if (db.getProductDao()
-                    .getProductSize() == 0 && response.isEmpty()
+            if (productDao.getProductSize() == 0 && response.isEmpty()
             ) {
                 responseWrapper.onResponse(DataState.Empty())
             } else {
-                db.getProductDao().deleteAllProducts()
-                db.getProductDao()
-                    .insert(response)
+                productDao.deleteAllProducts()
+                productDao.insert(response)
             }
         }
     }

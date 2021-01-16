@@ -1,18 +1,17 @@
 package com.basalam.basalamproduct.viewmodel
 
-import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.basalam.basalamproduct.model.Product
 import com.basalam.basalamproduct.repository.ProductRepository
 import com.basalam.basalamproduct.util.DataState
 import com.basalam.basalamproduct.util.Resource
 import com.basalam.basalamproduct.util.ResponseWrapper
-import javax.inject.Inject
 
 class ProductViewModel @ViewModelInject constructor(
-    private val productRepository: ProductRepository,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    private val productRepository: ProductRepository
 ) : ViewModel() {
     val productData: MutableLiveData<Resource<LiveData<List<Product>>>> = MutableLiveData()
 
@@ -62,6 +61,8 @@ class ProductViewModel @ViewModelInject constructor(
                     }
                 }
             }
-        }, 2)
+        }, 4)
     }
 }
+
+
