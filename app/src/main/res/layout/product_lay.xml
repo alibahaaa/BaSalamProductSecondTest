@@ -9,7 +9,7 @@
 
         <variable
             name="product"
-            type="com.basalam.basalamproduct.model.Product" />
+            type="com.basalam.domain.entities.ProductEntity" />
 
     </data>
 

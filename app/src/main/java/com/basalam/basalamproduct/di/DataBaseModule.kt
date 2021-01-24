@@ -2,8 +2,8 @@ package com.basalam.basalamproduct.di
 
 import android.content.Context
 import androidx.room.Room
-import com.basalam.basalamproduct.db.ProductDao
-import com.basalam.basalamproduct.db.ProductDatabase
+import com.basalam.data.db.ProductDao
+import com.basalam.data.db.ProductDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

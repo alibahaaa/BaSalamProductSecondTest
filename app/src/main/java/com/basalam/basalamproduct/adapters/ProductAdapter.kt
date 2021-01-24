@@ -1,27 +1,25 @@
 package com.basalam.basalamproduct.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.basalam.basalamproduct.databinding.ProductLayBinding
-import com.basalam.basalamproduct.model.Product
+import com.basalam.domain.entities.ProductEntity
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class ProductAdapter @Inject constructor() :
     RecyclerView.Adapter<ProductAdapter.ProductsViewHolder>() {
     inner class ProductsViewHolder(val binding: ProductLayBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    private val differCallback = object : DiffUtil.ItemCallback<Product>() {
-        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+    private val differCallback = object : DiffUtil.ItemCallback<ProductEntity>() {
+        override fun areItemsTheSame(oldItem: ProductEntity, newItem: ProductEntity): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+        override fun areContentsTheSame(oldItem: ProductEntity, newItem: ProductEntity): Boolean {
             return oldItem == newItem
         }
     }

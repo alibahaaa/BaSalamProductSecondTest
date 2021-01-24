@@ -24,8 +24,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val viewModel: ProductViewModel by viewModels()
+
     @Inject
     lateinit var productAdapter: ProductAdapter
+
     @Inject
     lateinit var shimmerAdapter: ShimmerAdapter
 
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setUpRecyclerView()
         setUpShimmerRecyclerView()
         subscribeObservers()
     }
@@ -42,7 +45,6 @@ class MainActivity : AppCompatActivity() {
             when (productResponse) {
                 is Resource.Success -> {
                     println("Success log")
-                    setUpRecyclerView()
                     hideShimmer()
                     productResponse.data?.observe(this, Observer { productList ->
                         productAdapter.differ.submitList(productList)
@@ -114,6 +116,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpRecyclerView() {
+        println("log set rec")
         recyclerview_product.apply {
             adapter = productAdapter
             layoutManager = GridLayoutManager(context, 2)

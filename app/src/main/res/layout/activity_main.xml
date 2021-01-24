@@ -1,67 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="rtl"
     android:background="@color/grey"
     tools:context=".ui.MainActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:id="@+id/appBar"
-        android:background="@color/white"
-        android:layout_height="56dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layoutDirection="rtl"
-            android:layout_height="56dp">
+    <ImageView
+        android:layout_width="56dp"
+        android:src="@drawable/menu"
+        android:id="@+id/menu"
+        android:padding="15dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_height="56dp"/>
 
 
-            <ImageView
-                android:layout_width="56dp"
-                android:src="@drawable/menu"
-                android:padding="15dp"
-                android:layout_height="56dp"/>
+    <ImageView
+        android:layout_width="0dp"
+        android:src="@drawable/ic_logo_basalam_text"
+        app:layout_constraintTop_toTopOf="@id/menu"
+        app:layout_constraintBottom_toBottomOf="@id/menu"
+        app:layout_constraintRight_toLeftOf="@id/menu"
+        android:layout_height="wrap_content"/>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:paddingLeft="150dp"
-                android:src="@drawable/ic"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"/>
+    <ImageView
+        android:layout_width="56dp"
+        android:src="@drawable/bag"
+        android:id="@+id/bag"
+        android:padding="15dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_height="56dp"/>
 
-            <ImageView
-                android:layout_width="56dp"
-                android:src="@drawable/search"
-                android:padding="15dp"
-                android:layout_height="56dp"/>
-
-            <ImageView
-                android:layout_width="56dp"
-                android:src="@drawable/bag"
-                android:padding="15dp"
-                android:layout_height="56dp"/>
-
-
-        </LinearLayout>
-
-    </RelativeLayout>
+    <ImageView
+        android:layout_width="56dp"
+        android:src="@drawable/search"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="15dp"
+        app:layout_constraintLeft_toRightOf="@id/bag"
+        android:layout_height="56dp"/>
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_product"
         android:layout_width="match_parent"
-        android:layout_below="@id/appBar"
-        android:layout_height="match_parent">
+        app:layout_constraintTop_toBottomOf="@id/menu"
+        android:layout_below="@id/menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp">
     </androidx.recyclerview.widget.RecyclerView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_shimmer"
-        android:layout_below="@id/appBar"
+        android:layout_below="@id/menu"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        app:layout_constraintTop_toBottomOf="@id/menu"
+        android:layout_height="0dp">
     </androidx.recyclerview.widget.RecyclerView>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

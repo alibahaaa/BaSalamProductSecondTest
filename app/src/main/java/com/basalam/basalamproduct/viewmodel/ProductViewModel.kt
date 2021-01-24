@@ -1,68 +1,75 @@
 package com.basalam.basalamproduct.viewmodel
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.basalam.basalamproduct.model.Product
-import com.basalam.basalamproduct.repository.ProductRepository
-import com.basalam.basalamproduct.util.DataState
+import androidx.lifecycle.*
 import com.basalam.basalamproduct.util.Resource
-import com.basalam.basalamproduct.util.ResponseWrapper
+import com.basalam.domain.entities.ProductEntity
+import com.basalam.domain.usecases.GetProductUseCase
+import com.basalam.domain.utils.DataState
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class ProductViewModel @ViewModelInject constructor(
-    private val productRepository: ProductRepository
+    private val productUseCase: GetProductUseCase
 ) : ViewModel() {
-    val productData: MutableLiveData<Resource<LiveData<List<Product>>>> = MutableLiveData()
+    val productData: MutableLiveData<Resource<LiveData<List<ProductEntity>>>> = MutableLiveData()
 
     init {
         getData()
     }
 
     fun getData() {
-        productRepository.getProduct(object : ResponseWrapper {
-            override fun onResponse(response: DataState<LiveData<List<Product>>>) {
-                when (response) {
+        viewModelScope.launch {
+            println("log view model ")
+            productUseCase.getProductUseCase().collect { responseUseCase ->
+                when (responseUseCase) {
                     is DataState.Success -> {
-                        println("log Success for repository")
-                        productData.postValue(Resource.Success(response.data!!))
+                        productData.postValue(
+                            Resource.Success(
+                                responseUseCase.data?.asLiveData(
+                                    coroutineContext
+                                )!!
+                            )
+                        )
+                    }
+
+                    is DataState.Empty -> {
+                        productData.postValue(Resource.Empty())
                     }
                     is DataState.Error -> {
-                        println("log Error for repository")
                         when {
-                            response.categoryError.equals("Validator") -> {
+                            responseUseCase.categoryError.equals("Validator") -> {
                                 productData.postValue(
                                     Resource.Error.Validator(
-                                        response.message!!,
-                                        response.data!!
+                                        responseUseCase.message!!,
+                                        responseUseCase.data?.asLiveData(coroutineContext)!!
                                     )
                                 )
                             }
-                            response.categoryError.equals("Internal") -> {
+                            responseUseCase.categoryError.equals("Internal") -> {
                                 productData.postValue(
                                     Resource.Error.Internal(
-                                        response.message!!,
-                                        response.data!!
+                                        responseUseCase.message!!,
+                                        responseUseCase.data?.asLiveData(coroutineContext)!!
                                     )
                                 )
                             }
                             else -> {
                                 productData.postValue(
                                     Resource.Error.UnKnownError(
-                                        response.message!!,
-                                        response.data!!
+                                        responseUseCase.message!!,
+                                        responseUseCase.data?.asLiveData(coroutineContext)!!
                                     )
                                 )
                             }
                         }
                     }
-                    is DataState.Empty -> {
-                        productData.postValue(Resource.Empty())
-                    }
                 }
             }
-        }, 4)
+        }
     }
 }
-
-
